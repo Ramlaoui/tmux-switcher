@@ -1,0 +1,19 @@
+name: Checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Install terminal tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tmux
+          curl --fail --location https://github.com/junegunn/fzf/releases/download/v0.72.0/fzf-0.72.0-linux_amd64.tar.gz | tar -xz -C /tmp fzf
+          sudo install /tmp/fzf /usr/local/bin/fzf
+      - run: uvx ruff check .
+      - run: uvx ruff format --check .
+      - run: uv run --no-sync --script test_switcher.py

@@ -1,0 +1,9 @@
+.install-backup/
+__pycache__/
+.venv/
+.ruff_cache/
+.env
+.env.*
+*.pem
+*.key
+*.log
