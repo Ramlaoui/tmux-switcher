@@ -5,6 +5,9 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        fzf: ["0.66.0", "0.72.0"]
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
@@ -12,7 +15,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y tmux
-          curl --fail --location https://github.com/junegunn/fzf/releases/download/v0.72.0/fzf-0.72.0-linux_amd64.tar.gz | tar -xz -C /tmp fzf
+          curl --fail --location https://github.com/junegunn/fzf/releases/download/v${{ matrix.fzf }}/fzf-${{ matrix.fzf }}-linux_amd64.tar.gz | tar -xz -C /tmp fzf
           sudo install /tmp/fzf /usr/local/bin/fzf
       - run: uvx ruff check .
       - run: uvx ruff format --check .
