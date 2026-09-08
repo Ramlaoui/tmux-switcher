@@ -9,8 +9,9 @@ and selection; recently selected panes are one shortcut away.
 
 ## Install
 
-Requires **tmux**, **fzf**, and **uv** on `PATH`, with Python 3.11+ available to uv.
-Tested with tmux 3.6 and fzf 0.72. Python uses only the standard library.
+Requires **tmux**, **fzf 0.66+**, and **uv** on `PATH`, with Python 3.11+ available to uv.
+fzf 0.66 is needed for the Shift-PageUp / Shift-PageDown preview shortcuts.
+Tested with tmux 3.6 and fzf 0.66 and 0.72. Python uses only the standard library.
 
 ```sh
 git clone https://github.com/Ramlaoui/tmux-switcher.git
