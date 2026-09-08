@@ -125,7 +125,7 @@ def choose(client, current):
     while True:
         listing = rows(current, scope)
         query, selected = saved.get(scope, ("", ""))
-        base = ["fzf", "--no-sort", "--delimiter=\t", "--with-nth=4.."]
+        base = ["fzf", "--tiebreak=begin,index", "--delimiter=\t", "--with-nth=4.."]
         position = 1
         if selected:
             filtered = subprocess.run(
@@ -148,6 +148,7 @@ def choose(client, current):
             [
                 *base,
                 "--layout=reverse",
+                "--no-hscroll",
                 "--border=rounded",
                 "--sync",
                 "--query",

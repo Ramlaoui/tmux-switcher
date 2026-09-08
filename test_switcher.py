@@ -93,6 +93,7 @@ def test():
                 directory,
             )
             tmux("resize-pane", "-Z", "-t", "beta")
+            tmux("select-pane", "-t", target, "-T", "x" * 180 + " search-at-end alpha")
             client = subprocess.Popen(
                 ["tmux", "-S", socket, "attach", "-t", "alpha"],
                 stdin=slave,
@@ -144,6 +145,22 @@ def test():
 
             picker = launch()
             wait_for(lambda: "Tasks" in tmux("capture-pane", "-p", "-t", picker))
+            tmux("send-keys", "-t", picker, "-l", "search-at-end")
+            time.sleep(0.2)
+            screen = tmux("capture-pane", "-p", "-t", picker).splitlines()
+            assert any("beta ·" in line[:65] for line in screen[3:8]), (
+                "Searching pane metadata must not scroll the session name out of view"
+            )
+            tmux("send-keys", "-t", picker, "C-u")
+            time.sleep(0.1)
+            tmux("send-keys", "-t", picker, "-l", "alpha")
+            time.sleep(0.2)
+            screen = tmux("capture-pane", "-p", "-t", picker).splitlines()
+            assert "alpha ·" in screen[3][:65], (
+                "An exact session-name match should outrank a more recent metadata match"
+            )
+            tmux("send-keys", "-t", picker, "C-u")
+            time.sleep(0.1)
             tmux("send-keys", "-t", picker, "Tab")
             wait_for(lambda: "Panes" in tmux("capture-pane", "-p", "-t", picker))
             tmux("send-keys", "-t", picker, "Down")

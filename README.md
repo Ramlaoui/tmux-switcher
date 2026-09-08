@@ -43,7 +43,9 @@ set -g @plugin 'Ramlaoui/tmux-switcher'
 | Ctrl-F / Ctrl-/ | Enlarge / hide preview |
 | F1 | Toggle shortcut help |
 
-Sessions are ordered by tmux attachment time, with the current session last.
+With an empty query, sessions follow tmux attachment time, with the current
+session last. Searching ranks by fuzzy match quality, then by how early the
+match appears in the row (favoring session names), then by recency.
 Pane views start unfiltered. The 20 most recently selected panes are remembered
 in the tmux server; closed panes disappear from results. History resets when
 the server exits.
